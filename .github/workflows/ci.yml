@@ -4,7 +4,6 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 jobs:
   test:
@@ -19,5 +18,4 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -e .[test]
       - name: Run tests
-        run: |
-          pytest -vv
+        run: pytest -q
