@@ -1,0 +1,20 @@
+[project]
+name = "batchsmith"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Po-wei Huang",email = "abc1199281@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "langchain-google-genai>=0.1.4",
+]
+
+[tool.poetry]
+packages = [{include = "batchsmith", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
