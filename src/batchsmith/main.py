@@ -10,7 +10,6 @@ import getpass
 import os
 import json
 import sys
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 
 
@@ -29,6 +28,7 @@ def load_json(file_path):
 
 def create_llm():
     """Creates and configures the ChatGoogleGenerativeAI LLM."""
+    from langchain_google_genai import ChatGoogleGenerativeAI
     if "GOOGLE_API_KEY" not in os.environ:
         os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter your Google AI API key: ")
     return ChatGoogleGenerativeAI(

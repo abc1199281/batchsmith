@@ -11,6 +11,11 @@ dependencies = [
     "langchain-google-genai>=0.1.4",
 ]
 
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+]
+
 [tool.poetry]
 packages = [{include = "batchsmith", from = "src"}]
 
