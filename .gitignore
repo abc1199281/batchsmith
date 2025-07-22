@@ -6,5 +6,6 @@ venv/
 *.log
 .vscode/
 pytest*
+*output*
 # Environment variables
 .env
