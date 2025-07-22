@@ -9,7 +9,7 @@ A modular script for batch structured output generation using LangChain + Google
 
 ## Installation
 
-Install dependencies via Poetry:
+Install dependencies via Poetry (including dev dependencies for testing):
 
 ```bash
 poetry install

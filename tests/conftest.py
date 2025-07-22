@@ -1,16 +1,21 @@
 import os
 import sys
 
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    # If python-dotenv is not installed, skip loading .env (tests will skip if secrets are missing)
+    load_dotenv = lambda *args, **kwargs: None
 import pytest
 
-# Load environment variables from .env for local development.
+# Load environment variables from .env for local development (if available).
 load_dotenv()
 
 # Add project src directory to sys.path for test imports
 sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 )
+
 
 def _get_env_or_skip(name):
     val = os.getenv(name)
