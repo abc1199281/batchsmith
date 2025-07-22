@@ -21,20 +21,26 @@ Install runtime and development dependencies:
 poetry install
 ```
 
+Install and activate pre-commit hooks:
+
+```bash
+poetry run pre-commit install
+```
+
 ## Configuration
 
-Create a JSON schema file (e.g., `config.json`) to define the structure of the expected output.  
+Create a JSON schema file (e.g., `config.json`) to define the structure of the expected output.
 See `tests/examples/jokes/config.json` for an example.
 
 ## Prompts
 
-Define system and user prompts in a JSON file (e.g., `prompts.json`).  
-Use `{variable}` placeholders for template data.  
+Define system and user prompts in a JSON file (e.g., `prompts.json`).
+Use `{variable}` placeholders for template data.
 See `tests/examples/jokes/prompts.json` for an example.
 
 ## Batch Data
 
-Prepare batch input data as a JSON array of objects. Each object should provide values for the template variables.  
+Prepare batch input data as a JSON array of objects. Each object should provide values for the template variables.
 See `tests/examples/jokes/batch_data.json` for an example.
 
 ## Usage

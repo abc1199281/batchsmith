@@ -19,6 +19,7 @@ optional = false
 pytest = "^7.0"
 python-dotenv = "^0.21.0"
 langchain-google-genai = ">=0.1.4,<3.0.0"
+pre-commit = "^3.4.0"
 
 [tool.poetry]
 packages = [{include = "batchsmith", from = "src"}]
