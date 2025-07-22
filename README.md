@@ -54,7 +54,7 @@ export GOOGLE_API_KEY=your_api_key
 Run the batch generation:
 
 ```bash
-python -m batchsmith.main \
+batchsmith \
   --config config.json \
   --prompts prompts.json \
   --batch_data batch_data.json \
@@ -68,7 +68,7 @@ An end-to-end example is available under `tests/examples/jokes`. For example:
 ```bash
 cd tests/examples/jokes
 export GOOGLE_API_KEY=your_api_key
-python -m batchsmith.main \
+batchsmith \
   --config config.json \
   --prompts prompts.json \
   --batch_data batch_data.json \
