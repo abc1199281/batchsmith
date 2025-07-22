@@ -23,11 +23,14 @@ def _get_env_or_skip(name):
         pytest.skip(f"Skipping test: required env var {name!r} not set")
     return val
 
+
 @pytest.fixture(scope="session")
 def google_api_key():
     return _get_env_or_skip("GOOGLE_API_KEY")
 
+
 def pytest_configure(config):
     config.addinivalue_line(
-        "markers", "requires_secrets: mark tests that require real environment credentials"
+        "markers",
+        "requires_secrets: mark tests that require real environment credentials",
     )

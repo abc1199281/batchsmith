@@ -41,14 +41,15 @@ def test_load_json_invalid(tmp_path):
 def test_create_llm(monkeypatch):
     # Stub ChatGoogleGenerativeAI to capture init arguments
     calls = {}
+
     class DummyLLM:
         def __init__(self, model, temperature, max_tokens, timeout, max_retries):
-            calls['init_args'] = {
-                'model': model,
-                'temperature': temperature,
-                'max_tokens': max_tokens,
-                'timeout': timeout,
-                'max_retries': max_retries,
+            calls["init_args"] = {
+                "model": model,
+                "temperature": temperature,
+                "max_tokens": max_tokens,
+                "timeout": timeout,
+                "max_retries": max_retries,
             }
 
     dummy_mod = types.ModuleType("langchain_google_genai")
@@ -63,10 +64,10 @@ def test_create_llm(monkeypatch):
     # Key should be stored in environment
     assert os.environ["GOOGLE_API_KEY"] == "xyz_key"
     # Verify init arguments
-    assert calls['init_args'] == {
-        'model': 'gemini-1.5-flash',
-        'temperature': 0,
-        'max_tokens': None,
-        'timeout': None,
-        'max_retries': 2,
+    assert calls["init_args"] == {
+        "model": "gemini-1.5-flash",
+        "temperature": 0,
+        "max_tokens": None,
+        "timeout": None,
+        "max_retries": 2,
     }
