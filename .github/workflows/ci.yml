@@ -16,6 +16,14 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e .[test]
+          # install package and test/runtime dependencies so pytest is available
+          python -m pip install -e .
+          pip install pytest python-dotenv langchain-google-genai
+      - name: Install code formatter
+        run: pip install black
+      - name: Check code style with black
+        run: black --check .
       - name: Run tests
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: pytest -q

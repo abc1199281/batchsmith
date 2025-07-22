@@ -2,3 +2,10 @@
 *.py[c]
 __pycache__/
 .pytest_cache/
+venv/
+*.log
+.vscode/
+pytest*
+*output*
+# Environment variables
+.env

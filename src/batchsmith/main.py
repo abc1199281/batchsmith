@@ -29,6 +29,7 @@ def load_json(file_path):
 def create_llm():
     """Creates and configures the ChatGoogleGenerativeAI LLM."""
     from langchain_google_genai import ChatGoogleGenerativeAI
+
     if "GOOGLE_API_KEY" not in os.environ:
         os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter your Google AI API key: ")
     return ChatGoogleGenerativeAI(
@@ -43,20 +44,31 @@ def create_llm():
 def create_chain(llm, json_schema, prompts):
     """Creates the LangChain for structured output generation."""
     structured_llm = llm.with_structured_output(json_schema)
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", prompts["system"]),
-        ("user", prompts["user"])
-    ])
+    prompt = ChatPromptTemplate.from_messages(
+        [("system", prompts["system"]), ("user", prompts["user"])]
+    )
     return prompt | structured_llm
 
 
 def main():
     """Main function to run the generation pipeline."""
-    parser = argparse.ArgumentParser(description="Generate structured data using a language model.")
-    parser.add_argument("--config", default="config.json", help="Path to the configuration file (JSON schema).")
-    parser.add_argument("--prompts", default="prompts.json", help="Path to the prompts file.")
-    parser.add_argument("--batch_data", default="batch_data.json", help="Path to the batch data file.")
-    parser.add_argument("--output", default="output.json", help="Path to the output file.")
+    parser = argparse.ArgumentParser(
+        description="Generate structured data using a language model."
+    )
+    parser.add_argument(
+        "--config",
+        default="config.json",
+        help="Path to the configuration file (JSON schema).",
+    )
+    parser.add_argument(
+        "--prompts", default="prompts.json", help="Path to the prompts file."
+    )
+    parser.add_argument(
+        "--batch_data", default="batch_data.json", help="Path to the batch data file."
+    )
+    parser.add_argument(
+        "--output", default="output.json", help="Path to the output file."
+    )
     args = parser.parse_args()
 
     json_schema = load_json(args.config)

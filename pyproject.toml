@@ -1,7 +1,7 @@
 [project]
 name = "batchsmith"
 version = "0.1.0"
-description = ""
+description = "BatchSmith is a modular CLI tool for structured batch output generation using LangChain and Google Generative AI."
 authors = [
     {name = "Po-wei Huang",email = "abc1199281@gmail.com"}
 ]
@@ -11,10 +11,17 @@ dependencies = [
     "langchain-google-genai>=0.1.4",
 ]
 
-[project.optional-dependencies]
-test = [
-    "pytest>=7.0",
-]
+[project.scripts]
+batchsmith = "batchsmith.main:main"
+
+
+[tool.poetry.group.dev]
+optional = false
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+python-dotenv = "^0.21.0"
+pre-commit = "^3.4.0"
 
 [tool.poetry]
 packages = [{include = "batchsmith", from = "src"}]
