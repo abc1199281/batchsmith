@@ -1,0 +1,40 @@
+{
+    "title": "Idioms_and_phrasal_verbs_teacher",
+    "description": "Explain the idiom / phrasal verb provided to the user.",
+    "type": "object",
+    "properties": {
+        "meaning_en": {
+            "type": "string",
+            "description": "Clearly explain the definition of the idiom/phrasal verb."
+        },
+        "meaning_cn": {
+            "type": "string",
+            "description": "Clearly explain the definition of the idiom/phrasal verb. This should be in traditional Mandarin."
+        },
+        "origin": {
+            "type": "string",
+            "description": "Explain where and how the idiom/phrasal verb originated, if known. Include any interesting historical context, stories, or anecdotes associated with its development. If the exact origin is uncertain, mention that as well."
+        },
+        "usage": {
+            "type": "string",
+            "description": "Provide at least two clear example sentences demonstrating how the idiom/phrasal verb is used in a natural context. Briefly describe the typical situations or contexts where this expression is commonly used."
+        },
+        "alternatives": {
+            "type": "string",
+            "description": "Suggest at least two alternative ways to express the same idea, including synonyms, similar idioms, or different phrasal constructions. If the alternatives are used more frequently, please let me know."
+        },
+        "frequency": {
+            "type": "string",
+            "description": "1. Consider the alternatives, sort them based on the frequency. 2. If the idiom is rarely used, please let me know."
+        },
+        "vocabulary": {
+            "type": "string",
+            "description": "The meaning of the vocabulary used in the idiom or phrasal verb  in traditional Mandarin, if the input vocabulary is applicable."
+        },
+        "rating": {
+            "type": "integer",
+            "description": "An integer from 1 to 10 indicating how frequently the idiom/phrasal verb is used (1 = rarely used, 10 = very common)."
+        }
+    },
+    "required": ["meaning_en", "meaning_cn", "origin", "usage", "alternatives", "frequency", "rating"]
+}
