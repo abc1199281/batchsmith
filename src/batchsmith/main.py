@@ -74,7 +74,6 @@ def json_to_markdown(
                 md_lines.append("")
             # Answer subsection
             md_lines.append("### Answer")
-            # blank line before content for readability
             md_lines.append("")
             if isinstance(item, dict):
                 # determine key order: required first then others
@@ -95,8 +94,8 @@ def json_to_markdown(
                             # hard line break for Markdown:
                             # two spaces at end
                             lines = value.split("\n")
-                            md_lines.append(f"- **{key}**: {lines[0]}  ")
-                            for line in lines[1:]:
+                            md_lines.append(f"- **{key}**:")
+                            for line in lines:
                                 md_lines.append(f"    {line}  ")
                             continue
                     md_lines.append(f"- **{key}**: {value}")
