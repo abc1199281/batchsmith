@@ -78,5 +78,9 @@ def test_json_to_markdown_includes_query():
     data = [{"result": "ok"}]
     batch = [{"query": "foo"}]
     md = main.json_to_markdown(data, batch_data=batch)
-    assert "original_query" in md
-    assert json.dumps(batch[0]) in md
+    # Input subsection should list the original query fields as bullets
+    assert "### Input" in md
+    assert "- **query**: foo" in md
+    # Answer subsection should be present with the result
+    assert "### Answer" in md
+    assert "- **result**: ok" in md

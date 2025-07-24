@@ -7,7 +7,7 @@ BatchSmith is a modular CLI tool for structured batch output generation using La
 - **Structured JSON validation**: Define output schemas with JSON Schema.
 - **Batch processing**: Generate multiple outputs in one run.
 - **Templated prompts**: Customize system and user prompts with template variables.
-- **Markdown conversion**: Convert the output JSON to Markdown sections (one per item) using the `--to-markdown` option. Each section preserves the originating query and orders fields per the schema’s `required` array. A `.md` file is auto-saved alongside the JSON output.
+- **Markdown conversion**: Convert the output JSON to Markdown sections (one per item) using the `--to-markdown` option. Each section expands the input data as bullet points in an **Input** subsection and the model’s response in an **Answer** subsection, ordering fields per the schema’s `required` array. String values containing newline characters are rendered with line breaks. A `.md` file is auto-saved alongside the JSON output.
 
 ## Requirements
 

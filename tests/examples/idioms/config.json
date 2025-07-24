@@ -29,7 +29,7 @@
         },
         "vocabulary": {
             "type": "string",
-            "description": "The meaning of the vocabulary used in the idiom or phrasal verb  in traditional Mandarin, if the input vocabulary is applicable."
+            "description": "The meaning of the vocabulary used in the idiom or phrasal verb  in traditional Mandarin (no pinyin), if the input vocabulary is applicable."
         },
         "rating": {
             "type": "integer",

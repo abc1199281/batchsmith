@@ -65,21 +65,30 @@ def json_to_markdown(
     if isinstance(data, list):
         for idx, item in enumerate(data, start=1):
             md_lines.append(f"## Query {idx}")
+            # Input subsection: expand original query as bullet points
             if batch_data and idx - 1 < len(batch_data):
-                original = json.dumps(batch_data[idx - 1])
-                md_lines.append(f"- **original_query**: {original}")
+                md_lines.append("### Input")
+                for key, val in batch_data[idx - 1].items():
+                    md_lines.append(f"- **{key}**: {val}")
+                md_lines.append("")
+            # Answer subsection
+            md_lines.append("### Answer")
             if isinstance(item, dict):
-                # use provided order (schema.required) first
+                # determine key order: required first then others
                 if order:
-                    for key in order:
-                        if key in item:
-                            md_lines.append(f"- **{key}**: {item[key]}")
-                    # append any other fields not in order
-                    for key in item:
-                        if key not in order:
-                            md_lines.append(f"- **{key}**: {item[key]}")
+                    keys = list(order) + [k for k in item if k not in order]
                 else:
-                    for key, value in item.items():
+                    keys = list(item)
+                for key in keys:
+                    if key not in item:
+                        continue
+                    value = item[key]
+                    if isinstance(value, str) and "\n" in value:
+                        lines = value.split("\n")
+                        md_lines.append(f"- **{key}**: {lines[0]}")
+                        for line in lines[1:]:
+                            md_lines.append(f"  {line}")
+                    else:
                         md_lines.append(f"- **{key}**: {value}")
             else:
                 md_lines.append("```json")
