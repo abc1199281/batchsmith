@@ -74,6 +74,8 @@ def json_to_markdown(
                 md_lines.append("")
             # Answer subsection
             md_lines.append("### Answer")
+            # blank line before content for readability
+            md_lines.append("")
             if isinstance(item, dict):
                 # determine key order: required first then others
                 if order:
