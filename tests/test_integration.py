@@ -1,6 +1,20 @@
+import sys
+import types
+
 import pytest
 
-from batchsmith.main import create_llm
+try:
+    from batchsmith.main import create_llm
+except ModuleNotFoundError:
+    # Stub external deps if the package cannot be imported
+    sys.modules.setdefault(
+        "langchain_core",
+        types.ModuleType("langchain_core"),
+    )
+    prompts_mod = types.ModuleType("langchain_core.prompts")
+    prompts_mod.ChatPromptTemplate = object
+    sys.modules.setdefault("langchain_core.prompts", prompts_mod)
+    from batchsmith.main import create_llm
 
 
 @pytest.mark.requires_secrets
