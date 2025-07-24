@@ -16,11 +16,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # install package and test/runtime dependencies so pytest is available
-          python -m pip install -e .
-          pip install pytest python-dotenv langchain-google-genai pre-commit
+          pip install poetry
+          poetry install --no-interaction
       - name: Run pre-commit
-        run: pre-commit run --all-files
+        run: poetry run pre-commit run --all-files
       - name: Install code formatter
         run: pip install black
       - name: Check code style with black
@@ -28,4 +27,4 @@ jobs:
       - name: Run tests
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-        run: pytest -q
+        run: poetry run pytest -q
