@@ -13,7 +13,7 @@
         },
         "origin": {
             "type": "string",
-            "description": "Explain where and how the idiom/phrasal verb originated, if known. Include any interesting historical context, stories, or anecdotes associated with its development. If the exact origin is uncertain, mention that as well."
+            "description": "Explain where and how the idiom/phrasal verb originated, if known. Include any interesting historical context, stories, or anecdotes associated with its development. If the exact origin is uncertain, mention that as well. This should be in traditional Mandarin."
         },
         "usage": {
             "type": "string",
@@ -29,7 +29,7 @@
         },
         "vocabulary": {
             "type": "string",
-            "description": "The meaning of the vocabulary used in the idiom or phrasal verb  in traditional Mandarin, if the input vocabulary is applicable."
+            "description": "The meaning of the vocabulary used in the idiom or phrasal verb  in traditional Mandarin (no pinyin), if the input vocabulary is applicable."
         },
         "rating": {
             "type": "integer",

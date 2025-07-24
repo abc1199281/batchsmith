@@ -1,4 +1,18 @@
+import importlib.util
+import sys
+import types
+
 import pytest
+
+# Stub external dependencies for imports
+if importlib.util.find_spec("langchain_core.prompts") is None:
+    prompts_module = types.ModuleType("langchain_core.prompts")
+    prompts_module.ChatPromptTemplate = object
+    sys.modules["langchain_core.prompts"] = prompts_module
+
+if importlib.util.find_spec("langchain_google_genai") is None:
+    mod = types.ModuleType("langchain_google_genai")
+    sys.modules["langchain_google_genai"] = mod
 
 from batchsmith.main import create_llm
 
