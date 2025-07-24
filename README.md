@@ -86,3 +86,7 @@ poetry run pytest
 ## Contributing
 
 Contributions are welcome! Please open issues or pull requests for bug reports and feature requests.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
