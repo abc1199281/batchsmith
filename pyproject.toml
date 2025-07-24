@@ -6,6 +6,7 @@ authors = [
     {name = "Po-wei Huang",email = "abc1199281@gmail.com"}
 ]
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12,<4.0"
 dependencies = [
     "langchain-google-genai>=0.1.4",
@@ -25,6 +26,10 @@ pre-commit = "^3.4.0"
 
 [tool.poetry]
 packages = [{include = "batchsmith", from = "src"}]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
 
 
 [build-system]
