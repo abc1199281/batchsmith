@@ -1,9 +1,10 @@
+import importlib.util
 import json
 import os
-import pytest
 import sys
 import types
-import importlib.util
+
+import pytest
 
 # Only stub external dependencies if they are not actually installed
 if importlib.util.find_spec("langchain_google_genai") is None:
@@ -43,7 +44,9 @@ def test_create_llm(monkeypatch):
     calls = {}
 
     class DummyLLM:
-        def __init__(self, model, temperature, max_tokens, timeout, max_retries):
+        def __init__(
+            self, model, temperature, max_tokens, timeout, max_retries
+        ) -> None:
             calls["init_args"] = {
                 "model": model,
                 "temperature": temperature,
@@ -57,7 +60,14 @@ def test_create_llm(monkeypatch):
     monkeypatch.setitem(sys.modules, "langchain_google_genai", dummy_mod)
     # Ensure API key prompt path is taken
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
-    monkeypatch.setattr("batchsmith.main.getpass.getpass", lambda prompt: "xyz_key")
+
+    def dummy_prompt(prompt: str) -> str:
+        return "xyz_key"
+
+    monkeypatch.setattr(
+        "batchsmith.main.getpass.getpass",
+        dummy_prompt,
+    )
 
     llm = main.create_llm()
     assert isinstance(llm, DummyLLM)

@@ -1,15 +1,16 @@
-"""
-This script demonstrates a modular approach to using LangChain for structured output generation.
-It loads configuration, prompts, and batch data from JSON files,
-creates an LLM, constructs a chain with structured output,
-and processes a batch of requests, saving the results to a JSON file.
+"""Example CLI for structured batch generation with LangChain.
+
+The script loads configuration, prompts, and batch data from JSON files,
+creates a language model, builds a chain with structured output, and
+saves the generated responses to an output JSON file.
 """
 
 import argparse
 import getpass
-import os
 import json
+import os
 import sys
+
 from langchain_core.prompts import ChatPromptTemplate
 
 
@@ -31,7 +32,8 @@ def create_llm():
     from langchain_google_genai import ChatGoogleGenerativeAI
 
     if "GOOGLE_API_KEY" not in os.environ:
-        os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter your Google AI API key: ")
+        prompt_msg = "Enter your Google AI API key: "
+        os.environ["GOOGLE_API_KEY"] = getpass.getpass(prompt_msg)
     return ChatGoogleGenerativeAI(
         model="gemini-1.5-flash",
         temperature=0,
@@ -64,7 +66,9 @@ def main():
         "--prompts", default="prompts.json", help="Path to the prompts file."
     )
     parser.add_argument(
-        "--batch_data", default="batch_data.json", help="Path to the batch data file."
+        "--batch_data",
+        default="batch_data.json",
+        help="Path to the batch data file.",
     )
     parser.add_argument(
         "--output", default="output.json", help="Path to the output file."
