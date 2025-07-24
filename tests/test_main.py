@@ -1,18 +1,21 @@
 import json
 import os
-import pytest
 import sys
 import types
-import importlib.util
+
+import pytest
 
 # Only stub external dependencies if they are not actually installed
 try:
-    import langchain_google_genai  # type: ignore
+    import langchain_google_genai as _  # type: ignore  # noqa: F401
 except ModuleNotFoundError:
-    sys.modules["langchain_google_genai"] = types.ModuleType("langchain_google_genai")
+    sys.modules["langchain_google_genai"] = types.ModuleType(
+        "langchain_google_genai",
+    )
 
 try:
-    from langchain_core import prompts as _prompts  # type: ignore
+    from langchain_core import \
+        prompts as _core_prompts  # type: ignore  # noqa: F401
 except ModuleNotFoundError:
     core_mod = types.ModuleType("langchain_core")
     prompts_module = types.ModuleType("langchain_core.prompts")
@@ -48,7 +51,14 @@ def test_create_llm(monkeypatch):
     calls = {}
 
     class DummyLLM:
-        def __init__(self, model, temperature, max_tokens, timeout, max_retries):
+        def __init__(
+            self,
+            model,
+            temperature,
+            max_tokens,
+            timeout,
+            max_retries,
+        ):
             calls["init_args"] = {
                 "model": model,
                 "temperature": temperature,
@@ -62,7 +72,10 @@ def test_create_llm(monkeypatch):
     monkeypatch.setitem(sys.modules, "langchain_google_genai", dummy_mod)
     # Ensure API key prompt path is taken
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
-    monkeypatch.setattr("batchsmith.main.getpass.getpass", lambda prompt: "xyz_key")
+    monkeypatch.setattr(
+        "batchsmith.main.getpass.getpass",
+        lambda prompt: "xyz_key",
+    )
 
     llm = main.create_llm()
     assert isinstance(llm, DummyLLM)
@@ -82,9 +95,9 @@ def test_generate_files_from_idea(tmp_path, monkeypatch):
     idea = "test idea"
     meta_response = (
         "Here you go\n"
-        "```json\n{\"title\": \"X\"}\n```\n"
-        "```json\n{\"system\": \"s\", \"user\": \"u\"}\n```\n"
-        "```json\n[{\"a\": 1}]\n```\n"
+        '```json\n{"title": "X"}\n```\n'
+        '```json\n{"system": "s", "user": "u"}\n```\n'
+        '```json\n[{"a": 1}]\n```\n'
     )
 
     class DummyLLM:

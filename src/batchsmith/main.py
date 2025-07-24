@@ -1,14 +1,15 @@
 """
-This script demonstrates a modular approach to using LangChain for structured output generation.
-It loads configuration, prompts, and batch data from JSON files,
+This script demonstrates a modular approach to using LangChain for structured
+output generation. It loads configuration, prompts, and batch data from JSON
+files,
 creates an LLM, constructs a chain with structured output,
 and processes a batch of requests, saving the results to a JSON file.
 """
 
 import argparse
 import getpass
-import os
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -37,7 +38,8 @@ def create_llm():
     from langchain_google_genai import ChatGoogleGenerativeAI
 
     if "GOOGLE_API_KEY" not in os.environ:
-        os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter your Google AI API key: ")
+        prompt_text = "Enter your Google AI API key: "
+        os.environ["GOOGLE_API_KEY"] = getpass.getpass(prompt_text)
     return ChatGoogleGenerativeAI(
         model="gemini-1.5-flash",
         temperature=0,
@@ -79,7 +81,13 @@ def parse_meta_response(response):
     )
 
 
-def generate_files_from_idea(idea, config_path, prompts_path, batch_path, llm=None):
+def generate_files_from_idea(
+    idea,
+    config_path,
+    prompts_path,
+    batch_path,
+    llm=None,
+):
     """Generate config, prompts and batch data files from a high level idea."""
     if llm is None:
         llm = create_llm()
@@ -106,23 +114,30 @@ def main():
         "--prompts", default="prompts.json", help="Path to the prompts file."
     )
     parser.add_argument(
-        "--batch_data", default="batch_data.json", help="Path to the batch data file."
+        "--batch_data",
+        default="batch_data.json",
+        help="Path to the batch data file.",
     )
     parser.add_argument(
         "--output", default="output.json", help="Path to the output file."
     )
-    parser.add_argument(
-        "--idea",
-        help=(
-            "Generate config, prompts, and batch data from this high level idea"
-        ),
+    help_parts = (
+        "Generate config, prompts, and batch data from this high level ",
+        "idea",
     )
+    parser.add_argument("--idea", help="".join(help_parts))
     args = parser.parse_args()
 
     if args.idea:
-        generate_files_from_idea(args.idea, args.config, args.prompts, args.batch_data)
+        generate_files_from_idea(
+            args.idea,
+            args.config,
+            args.prompts,
+            args.batch_data,
+        )
         print(
-            f"Generated {args.config}, {args.prompts}, and {args.batch_data} from idea."
+            f"Generated {args.config}, {args.prompts}, and "
+            f"{args.batch_data} from idea."
         )
         return
 
