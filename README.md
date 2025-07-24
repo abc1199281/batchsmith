@@ -77,7 +77,13 @@ batchsmith \
 
 ## Meta Prompt
 
-Use the meta prompt in `META_PROMPT.md` to generate starter `config.json`, `prompts.json`, and `batch_data.json` files from a single high-level idea.
+Use the meta prompt in `META_PROMPT.md` to generate starter files from a single idea. You can either copy the prompt manually or run:
+
+```bash
+batchsmith --idea "My new project"
+```
+
+This creates `config.json`, `prompts.json`, and `batch_data.json` in the current directory.
 
 
 ## Testing
