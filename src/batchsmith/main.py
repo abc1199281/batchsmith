@@ -51,13 +51,23 @@ def create_chain(llm, json_schema, prompts):
     return prompt | structured_llm
 
 
-def json_to_markdown(data, order: list[str] | None = None):
-    """Convert JSON data to Markdown sections (one per query/item),
-    with ordering fields per `required` list."""
+def json_to_markdown(
+    data, order: list[str] | None = None, batch_data: list[dict] | None = None
+):
+    """Convert JSON data to Markdown sections (one per query/item).
+
+    If ``batch_data`` is provided, each section will also contain an
+    ``original_query`` field showing the corresponding input object.
+
+    Fields in ``data`` are ordered according to ``order`` when given.
+    """
     md_lines: list[str] = []
     if isinstance(data, list):
         for idx, item in enumerate(data, start=1):
             md_lines.append(f"## Query {idx}")
+            if batch_data and idx - 1 < len(batch_data):
+                original = json.dumps(batch_data[idx - 1])
+                md_lines.append(f"- **original_query**: {original}")
             if isinstance(item, dict):
                 # use provided order (schema.required) first
                 if order:
@@ -132,7 +142,9 @@ def main():
     with open(args.output, "w") as f:
         json.dump(response, f, indent=4)
     if args.to_markdown:
-        md = json_to_markdown(response, order=json_schema.get("required"))
+        md = json_to_markdown(
+            response, order=json_schema.get("required"), batch_data=batch_data
+        )
         # write markdown to a .md file matching the output JSON basename
         md_path = os.path.splitext(args.output)[0] + ".md"
         with open(md_path, "w") as mf:
