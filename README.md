@@ -7,7 +7,7 @@ BatchSmith is a modular CLI tool for structured batch output generation using La
 - **Structured JSON validation**: Define output schemas with JSON Schema.
 - **Batch processing**: Generate multiple outputs in one run.
 - **Templated prompts**: Customize system and user prompts with template variables.
-- **Markdown conversion**: Convert the output JSON to Markdown sections (one per item) using the `--to-markdown` option. Each section expands the input data as bullet points in an **Input** subsection and the model’s response in an **Answer** subsection, ordering fields per the schema’s `required` array. String values containing newline characters are rendered with line breaks. A `.md` file is auto-saved alongside the JSON output.
+- **Markdown conversion**: Convert the output JSON to Markdown sections (one per item) using the `--to-markdown` option. Each section expands the input data as bullet points in an **Input** subsection and the model’s response in an **Answer** subsection, ordering fields per the schema’s `required` array. String values containing newline characters are rendered with Markdown hard line breaks (two spaces). A `.md` file is auto-saved alongside the JSON output; use `--to-pdf` to also generate a PDF (requires pypandoc and a CJK-capable LaTeX font; e.g., install `fonts-noto-cjk`).
 
 ## Requirements
 
@@ -60,7 +60,7 @@ batchsmith \
   --prompts prompts.json \
   --batch_data batch_data.json \
   --output output.json \
-  --to-markdown
+  --to-markdown [--to-pdf]
 ```
 
 ## Examples
@@ -74,7 +74,8 @@ batchsmith \
   --config config.json \
   --prompts prompts.json \
   --batch_data batch_data.json \
-  --output output.json
+  --output output.json \
+  --to-markdown [--to-pdf]
 ```
 
 ## Testing

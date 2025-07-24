@@ -1049,6 +1049,18 @@ files = [
 typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
+name = "pypandoc"
+version = "1.15"
+description = "Thin wrapper for pandoc."
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+files = [
+    {file = "pypandoc-1.15-py3-none-any.whl", hash = "sha256:4ededcc76c8770f27aaca6dff47724578428eca84212a31479403a9731fc2b16"},
+    {file = "pypandoc-1.15.tar.gz", hash = "sha256:ea25beebe712ae41d63f7410c08741a3cab0e420f6703f95bc9b3a749192ce13"},
+]
+
+[[package]]
 name = "pytest"
 version = "7.4.4"
 description = "pytest: simple powerful testing with Python"
@@ -1409,4 +1421,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4.0"
-content-hash = "82656d870e94e22ede22541750b47a9032733e9ac69586595be75bd8b3505619"
+content-hash = "fe1e5d64318ae5935333bbb1d5df8b89f66c9679e64181f1f49f5d37bb4c9f74"
