@@ -72,3 +72,11 @@ def test_create_llm(monkeypatch):
         "timeout": None,
         "max_retries": 2,
     }
+
+
+def test_json_to_markdown_includes_query():
+    data = [{"result": "ok"}]
+    batch = [{"query": "foo"}]
+    md = main.json_to_markdown(data, batch_data=batch)
+    assert "original_query" in md
+    assert json.dumps(batch[0]) in md
