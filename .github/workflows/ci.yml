@@ -19,6 +19,8 @@ jobs:
           # install package and test/runtime dependencies so pytest is available
           python -m pip install -e .
           pip install pytest python-dotenv langchain-google-genai
+      - name: Run pre-commit
+        run: poetry run pre-commit run --all-files
       - name: Install code formatter
         run: pip install black
       - name: Check code style with black
