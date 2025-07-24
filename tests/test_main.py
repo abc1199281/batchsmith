@@ -7,11 +7,19 @@ import types
 import pytest
 
 # Only stub external dependencies if they are not actually installed
-if importlib.util.find_spec("langchain_google_genai") is None:
+try:
+    found = importlib.util.find_spec("langchain_google_genai")
+except Exception:
+    found = None
+if not found:
     mod = types.ModuleType("langchain_google_genai")
     sys.modules["langchain_google_genai"] = mod
 
-if importlib.util.find_spec("langchain_openai") is None:
+try:
+    found = importlib.util.find_spec("langchain_openai")
+except Exception:
+    found = None
+if not found:
     mod = types.ModuleType("langchain_openai")
     sys.modules["langchain_openai"] = mod
 
@@ -133,3 +141,15 @@ def test_create_llm_openai(monkeypatch):
         "timeout": None,
         "max_retries": 2,
     }
+
+
+def test_json_to_markdown_includes_query():
+    data = [{"result": "ok"}]
+    batch = [{"query": "foo"}]
+    md = main.json_to_markdown(data, batch_data=batch)
+    # Input subsection should list the original query fields as bullets
+    assert "### Input" in md
+    assert "- **query**: foo" in md
+    # Answer subsection should be present with the result
+    assert "### Answer" in md
+    assert "- **result**: ok" in md
