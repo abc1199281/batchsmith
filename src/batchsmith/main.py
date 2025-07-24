@@ -6,11 +6,10 @@ and processes a batch of requests, saving the results to a JSON file.
 """
 
 import argparse
-import getpass
-import os
 import json
 import sys
 from langchain_core.prompts import ChatPromptTemplate
+from .providers import create_llm
 
 
 def load_json(file_path):
@@ -25,20 +24,6 @@ def load_json(file_path):
         print(f"Error: Could not decode JSON from {file_path}.")
         sys.exit(1)
 
-
-def create_llm():
-    """Creates and configures the ChatGoogleGenerativeAI LLM."""
-    from langchain_google_genai import ChatGoogleGenerativeAI
-
-    if "GOOGLE_API_KEY" not in os.environ:
-        os.environ["GOOGLE_API_KEY"] = getpass.getpass("Enter your Google AI API key: ")
-    return ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
-        temperature=0,
-        max_tokens=None,
-        timeout=None,
-        max_retries=2,
-    )
 
 
 def create_chain(llm, json_schema, prompts):
@@ -69,13 +54,19 @@ def main():
     parser.add_argument(
         "--output", default="output.json", help="Path to the output file."
     )
+    parser.add_argument(
+        "--provider",
+        default="google",
+        choices=["google", "openai"],
+        help="LLM provider to use (google or openai)",
+    )
     args = parser.parse_args()
 
     json_schema = load_json(args.config)
     prompts = load_json(args.prompts)
     batch_data = load_json(args.batch_data)
 
-    llm = create_llm()
+    llm = create_llm(provider=args.provider)
     chain = create_chain(llm, json_schema, prompts)
 
     response = chain.batch(batch_data)
