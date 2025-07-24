@@ -85,9 +85,10 @@ def json_to_markdown(
                     value = item[key]
                     if isinstance(value, str) and "\n" in value:
                         lines = value.split("\n")
-                        md_lines.append(f"- **{key}**: {lines[0]}")
+                        # hard line break for Markdown: two spaces at end
+                        md_lines.append(f"- **{key}**: {lines[0]}  ")
                         for line in lines[1:]:
-                            md_lines.append(f"  {line}")
+                            md_lines.append(f"    {line}  ")
                     else:
                         md_lines.append(f"- **{key}**: {value}")
             else:
