@@ -75,6 +75,11 @@ batchsmith \
   --output output.json
 ```
 
+## Meta Prompt
+
+Use the meta prompt in `META_PROMPT.md` to generate starter `config.json`, `prompts.json`, and `batch_data.json` files from a single high-level idea.
+
+
 ## Testing
 
 Run the test suite:
