@@ -4,8 +4,12 @@ import sys
 try:
     from dotenv import load_dotenv
 except ImportError:
-    # If python-dotenv is not installed, skip loading .env (tests will skip if secrets are missing)
-    load_dotenv = lambda *args, **kwargs: None
+    # If python-dotenv is unavailable, skip loading .env.
+    # Tests that rely on secrets will be skipped.
+    def load_dotenv(*args, **kwargs):
+        return None
+
+
 import pytest
 
 # Load environment variables from .env for local development (if available).
@@ -30,7 +34,5 @@ def google_api_key():
 
 
 def pytest_configure(config):
-    config.addinivalue_line(
-        "markers",
-        "requires_secrets: mark tests that require real environment credentials",
-    )
+    marker_description = "requires_secrets: tests need env credentials"
+    config.addinivalue_line("markers", marker_description)
