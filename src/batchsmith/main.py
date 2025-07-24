@@ -74,6 +74,7 @@ def json_to_markdown(
                 md_lines.append("")
             # Answer subsection
             md_lines.append("### Answer")
+            md_lines.append("")
             if isinstance(item, dict):
                 # determine key order: required first then others
                 if order:
@@ -84,14 +85,20 @@ def json_to_markdown(
                     if key not in item:
                         continue
                     value = item[key]
-                    if isinstance(value, str) and "\n" in value:
-                        lines = value.split("\n")
-                        # hard line break for Markdown: two spaces at end
-                        md_lines.append(f"- **{key}**: {lines[0]}  ")
-                        for line in lines[1:]:
-                            md_lines.append(f"    {line}  ")
-                    else:
-                        md_lines.append(f"- **{key}**: {value}")
+                    if isinstance(value, str):
+                        # convert literal '\n' sequences to actual
+                        # newlines for proper Markdown
+                        if "\\n" in value:
+                            value = value.replace("\\n", "\n")
+                        if "\n" in value:
+                            # hard line break for Markdown:
+                            # two spaces at end
+                            lines = value.split("\n")
+                            md_lines.append(f"- **{key}**:")
+                            for line in lines:
+                                md_lines.append(f"    {line}  ")
+                            continue
+                    md_lines.append(f"- **{key}**: {value}")
             else:
                 md_lines.append("```json")
                 md_lines.append(json.dumps(item, indent=4))
@@ -139,8 +146,13 @@ def main():
     parser.add_argument(
         "--to-markdown",
         action="store_true",
-        help="Convert the output JSON file to a Markdown table and save to a .md file "
-        "with the same basename.",
+        help="Convert the output JSON file to Markdown sections "
+        "and save to a .md file with the same basename.",
+    )
+    parser.add_argument(
+        "--to-pdf",
+        action="store_true",
+        help="Convert the generated Markdown (.md) file to PDF (requires pypandoc).",
     )
     args = parser.parse_args()
 
@@ -154,14 +166,38 @@ def main():
     response = chain.batch(batch_data)
     with open(args.output, "w") as f:
         json.dump(response, f, indent=4)
-    if args.to_markdown:
+    if args.to_markdown or args.to_pdf:
         md = json_to_markdown(
             response, order=json_schema.get("required"), batch_data=batch_data
         )
-        # write markdown to a .md file matching the output JSON basename
         md_path = os.path.splitext(args.output)[0] + ".md"
         with open(md_path, "w") as mf:
             mf.write(md)
+        if args.to_pdf:
+            pdf_path = os.path.splitext(args.output)[0] + ".pdf"
+            try:
+                import pypandoc
+
+                # use XeLaTeX engine for Unicode (CJK) support
+                # use XeLaTeX engine with CJK font support for Traditional Chinese
+                pypandoc.convert_file(
+                    md_path,
+                    "pdf",
+                    outputfile=pdf_path,
+                    extra_args=[
+                        "--pdf-engine=xelatex",
+                        # specify CJK main font for Traditional Chinese
+                        "-V",
+                        "CJKmainfont=Noto Serif CJK TC",
+                    ],
+                )
+            except ImportError:
+                print(
+                    "PDF conversion skipped: pypandoc is not installed."
+                    " Install pypandoc to enable Markdown-to-PDF."
+                )
+            except Exception as e:
+                print(f"Error during PDF conversion: {e}")
 
 
 if __name__ == "__main__":
