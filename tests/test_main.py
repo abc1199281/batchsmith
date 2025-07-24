@@ -14,8 +14,7 @@ except ModuleNotFoundError:
     )
 
 try:
-    from langchain_core import \
-        prompts as _core_prompts  # type: ignore  # noqa: F401
+    from langchain_core import prompts as _core_prompts  # type: ignore  # noqa: F401
 except ModuleNotFoundError:
     core_mod = types.ModuleType("langchain_core")
     prompts_module = types.ModuleType("langchain_core.prompts")
