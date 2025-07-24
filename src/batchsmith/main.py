@@ -1,14 +1,16 @@
-"""
-This script demonstrates a modular approach to using LangChain for structured output generation.
-It loads configuration, prompts, and batch data from JSON files,
-creates an LLM, constructs a chain with structured output,
-and processes a batch of requests, saving the results to a JSON file.
+"""Utility to generate structured batch outputs using LangChain.
+
+The script loads configuration, prompts and batch data from JSON files,
+creates an LLM, constructs a chain with structured output and processes
+a batch of requests, saving the results to a JSON file.
 """
 
 import argparse
 import json
 import sys
+
 from langchain_core.prompts import ChatPromptTemplate
+
 from .providers import create_llm
 
 
@@ -23,7 +25,6 @@ def load_json(file_path):
     except json.JSONDecodeError:
         print(f"Error: Could not decode JSON from {file_path}.")
         sys.exit(1)
-
 
 
 def create_chain(llm, json_schema, prompts):
@@ -49,7 +50,9 @@ def main():
         "--prompts", default="prompts.json", help="Path to the prompts file."
     )
     parser.add_argument(
-        "--batch_data", default="batch_data.json", help="Path to the batch data file."
+        "--batch_data",
+        default="batch_data.json",
+        help="Path to the batch data file.",
     )
     parser.add_argument(
         "--output", default="output.json", help="Path to the output file."

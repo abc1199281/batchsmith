@@ -1,9 +1,10 @@
+import importlib.util
 import json
 import os
-import pytest
 import sys
 import types
-import importlib.util
+
+import pytest
 
 # Only stub external dependencies if they are not actually installed
 if importlib.util.find_spec("langchain_google_genai") is None:
@@ -23,8 +24,7 @@ if not found:
     prompts_module.ChatPromptTemplate = object
     sys.modules["langchain_core.prompts"] = prompts_module
 
-from batchsmith import main
-from batchsmith import providers
+from batchsmith import main, providers
 
 
 def test_load_json_valid(tmp_path):
@@ -52,7 +52,14 @@ def test_create_llm(monkeypatch):
     calls = {}
 
     class DummyLLM:
-        def __init__(self, model, temperature, max_tokens, timeout, max_retries):
+        def __init__(
+            self,
+            model,
+            temperature,
+            max_tokens,
+            timeout,
+            max_retries,
+        ):
             calls["init_args"] = {
                 "model": model,
                 "temperature": temperature,
@@ -68,7 +75,8 @@ def test_create_llm(monkeypatch):
     # Ensure API key prompt path is taken
     monkeypatch.delenv("GOOGLE_API_KEY", raising=False)
     monkeypatch.setattr(
-        "batchsmith.providers.google.getpass.getpass", lambda prompt: "xyz_key"
+        "batchsmith.providers.google.getpass.getpass",
+        lambda prompt: "xyz_key",
     )
 
     llm = providers.create_llm()
@@ -89,7 +97,14 @@ def test_create_llm_openai(monkeypatch):
     calls = {}
 
     class DummyLLM:
-        def __init__(self, model, temperature, max_tokens, timeout, max_retries):
+        def __init__(
+            self,
+            model,
+            temperature,
+            max_tokens,
+            timeout,
+            max_retries,
+        ):
             calls["init_args"] = {
                 "model": model,
                 "temperature": temperature,
@@ -104,7 +119,8 @@ def test_create_llm_openai(monkeypatch):
     sys.modules.pop("batchsmith.providers.openai", None)
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     monkeypatch.setattr(
-        "batchsmith.providers.openai.getpass.getpass", lambda prompt: "open_key"
+        "batchsmith.providers.openai.getpass.getpass",
+        lambda prompt: "open_key",
     )
 
     llm = providers.create_llm(provider="openai")
