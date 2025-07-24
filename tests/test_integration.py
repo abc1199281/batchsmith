@@ -1,6 +1,19 @@
 import pytest
+import sys
+import types
+import importlib.util
 
-from batchsmith.main import create_llm
+# Stub langchain_core.prompts if missing to allow importing create_llm
+try:
+    found = importlib.util.find_spec("langchain_core.prompts")
+except Exception:
+    found = None
+if not found:
+    prompts_module = types.ModuleType("langchain_core.prompts")
+    prompts_module.ChatPromptTemplate = object
+    sys.modules["langchain_core.prompts"] = prompts_module
+
+from batchsmith.providers import create_llm
 
 
 @pytest.mark.requires_secrets

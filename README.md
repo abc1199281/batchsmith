@@ -45,13 +45,13 @@ See `tests/examples/jokes/batch_data.json` for an example.
 
 ## Usage
 
-Set your Google API key:
+Set your API key (for Google or OpenAI):
 
 ```bash
-export GOOGLE_API_KEY=your_api_key
+export GOOGLE_API_KEY=your_google_key  # or set OPENAI_API_KEY for OpenAI
 ```
 
-Run the batch generation:
+Run the batch generation. Google is the default provider:
 
 ```bash
 batchsmith \
@@ -59,6 +59,21 @@ batchsmith \
   --prompts prompts.json \
   --batch_data batch_data.json \
   --output output.json
+```
+
+LLM implementations are located in `batchsmith/providers` so new providers can
+be added easily.
+
+To use OpenAI instead:
+
+```bash
+export OPENAI_API_KEY=your_openai_key
+batchsmith \
+  --config config.json \
+  --prompts prompts.json \
+  --batch_data batch_data.json \
+  --output output.json \
+  --provider openai
 ```
 
 ## Examples
