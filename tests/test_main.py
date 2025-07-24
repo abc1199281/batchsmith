@@ -1,9 +1,10 @@
+import importlib.util
 import json
 import os
-import pytest
 import sys
 import types
-import importlib.util
+
+import pytest
 
 # Only stub external dependencies if they are not actually installed
 if importlib.util.find_spec("langchain_google_genai") is None:
@@ -15,7 +16,7 @@ if importlib.util.find_spec("langchain_core.prompts") is None:
     prompts_module.ChatPromptTemplate = object
     sys.modules["langchain_core.prompts"] = prompts_module
 
-from batchsmith import main
+from batchsmith import main  # noqa: E402
 
 
 def test_load_json_valid(tmp_path):

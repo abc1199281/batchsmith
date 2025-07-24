@@ -13,7 +13,7 @@
         },
         "origin": {
             "type": "string",
-            "description": "Explain where and how the idiom/phrasal verb originated, if known. Include any interesting historical context, stories, or anecdotes associated with its development. If the exact origin is uncertain, mention that as well."
+            "description": "Explain where and how the idiom/phrasal verb originated, if known. Include any interesting historical context, stories, or anecdotes associated with its development. If the exact origin is uncertain, mention that as well. This should be in traditional Mandarin."
         },
         "usage": {
             "type": "string",
