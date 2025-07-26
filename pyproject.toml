@@ -15,6 +15,7 @@ dependencies = [
 
 [project.scripts]
 batchsmith = "batchsmith.main:main"
+pdfmd = "batchsmith.pdfmd:main"
 
 
 [tool.poetry.group.dev]
