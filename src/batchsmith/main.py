@@ -13,6 +13,8 @@ import sys
 
 from langchain_core.prompts import ChatPromptTemplate
 
+# import time
+
 
 def load_json(file_path):
     """Loads a JSON file and returns its content."""
@@ -35,7 +37,7 @@ def create_llm():
         prompt_msg = "Enter your Google AI API key: "
         os.environ["GOOGLE_API_KEY"] = getpass.getpass(prompt_msg)
     return ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
+        model="gemini-2.5-flash-lite",
         temperature=0,
         max_tokens=None,
         timeout=None,
@@ -164,6 +166,16 @@ def main():
     chain = create_chain(llm, json_schema, prompts)
 
     response = chain.batch(batch_data)
+    """
+    response = []
+    print(f"Processing {len(batch_data)} items with delay to respect rate limits...")
+    for i, item in enumerate(batch_data):
+        print(f"Processing item {i+1}/{len(batch_data)}...")
+        result = chain.invoke(item)
+        response.append(result)
+        time.sleep(1)
+        """
+
     with open(args.output, "w") as f:
         json.dump(response, f, indent=4)
     if args.to_markdown or args.to_pdf:

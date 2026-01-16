@@ -1,4 +1,5 @@
 *.venv*
+*.results
 *.py[c]
 __pycache__/
 .pytest_cache/

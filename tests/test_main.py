@@ -75,7 +75,7 @@ def test_create_llm(monkeypatch):
     assert os.environ["GOOGLE_API_KEY"] == "xyz_key"
     # Verify init arguments
     assert calls["init_args"] == {
-        "model": "gemini-1.5-flash",
+        "model": "gemini-2.5-flash-lite",
         "temperature": 0,
         "max_tokens": None,
         "timeout": None,
