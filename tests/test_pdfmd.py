@@ -36,11 +36,13 @@ def test_convert_md_to_pdf(monkeypatch, tmp_path):
 def test_convert_pdf_to_md(monkeypatch, tmp_path):
     pdf_file = tmp_path / "doc.pdf"
     pdf_file.write_text("binary")
-    calls = {}
-    _setup_pypandoc(monkeypatch, calls)
+
+    # Mock PdfReader
+    mock_page = types.SimpleNamespace(extract_text=lambda: "page content")
+    mock_reader = types.SimpleNamespace(pages=[mock_page])
+    monkeypatch.setattr(pdfmd, "PdfReader", lambda _: mock_reader)
 
     out = tmp_path / "out.md"
     pdfmd.convert(str(pdf_file), str(out))
 
-    assert calls["args"]["fmt"] == "md"
-    assert calls["args"]["outputfile"] == str(out)
+    assert out.read_text(encoding="utf-8") == "page content"

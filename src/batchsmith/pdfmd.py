@@ -6,6 +6,8 @@ import argparse
 import os
 import sys
 
+from PyPDF2 import PdfReader
+
 
 def convert(input_path: str, output_path: str | None = None) -> None:
     """Convert between PDF and Markdown using pypandoc.
@@ -17,9 +19,17 @@ def convert(input_path: str, output_path: str | None = None) -> None:
     """
     ext = os.path.splitext(input_path)[1].lower()
     if ext == ".pdf":
-        fmt = "md"
         output_path = output_path or os.path.splitext(input_path)[0] + ".md"
-        extra_args = []
+        try:
+            reader = PdfReader(input_path)
+            with open(output_path, "w", encoding="utf-8") as f:
+                for page in reader.pages:
+                    f.write(page.extract_text())
+            print(f"Successfully converted {input_path} to {output_path}")
+        except Exception as e:
+            print(f"Error converting {input_path}: {e}")
+            sys.exit(1)
+
     elif ext in {".md", ".markdown"}:
         fmt = "pdf"
         output_path = output_path or os.path.splitext(input_path)[0] + ".pdf"
@@ -28,17 +38,18 @@ def convert(input_path: str, output_path: str | None = None) -> None:
             "-V",
             "CJKmainfont=Noto Serif CJK TC",
         ]
+        try:
+            import pypandoc
+
+            pypandoc.convert_file(
+                input_path, fmt, outputfile=output_path, extra_args=extra_args
+            )
+            print(f"Successfully converted {input_path} to {output_path}")
+        except Exception as e:
+            print(f"Error converting {input_path}: {e}")
+            sys.exit(1)
     else:
         raise ValueError("Input must be a .pdf or .md/.markdown file")
-
-    try:
-        import pypandoc
-
-        pypandoc.convert_file(
-            input_path, fmt, outputfile=output_path, extra_args=extra_args
-        )
-    except Exception as exc:  # pragma: no cover - error path depends on env
-        print(f"Conversion failed: {exc}")
 
 
 def main() -> None:
